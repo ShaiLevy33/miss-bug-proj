@@ -8,7 +8,8 @@ const axios = Axios.create({
 })
 
 const STORAGE_KEY = 'bugDB'
-const BASE_URL = 'http://127.0.0.1:3031/api/bug/'
+// const BASE_URL = 'http://127.0.0.1:3031/api/bug/'
+const BASE_URL = '/api/bug/'
 
 export const bugService = {
     query,
@@ -74,13 +75,13 @@ function getEmptyBug() {
     }
 }
 
-function getRandomBug() {
-    return {
-        vendor: 'Susita-' + (Date.now() % 1000),
-        price: utilService.getRandomIntInclusive(1000, 9000),
-        speed: utilService.getRandomIntInclusive(90, 200),
-    }
-}
+// function getRandomBug() {
+//     return {
+//         vendor: 'Susita-' + (Date.now() % 1000),
+//         price: utilService.getRandomIntInclusive(1000, 9000),
+//         speed: utilService.getRandomIntInclusive(90, 200),
+//     }
+// }
 
 function getDefaultFilter() {
     return { txt: '', maxPrice: '', minSpeed: '' }

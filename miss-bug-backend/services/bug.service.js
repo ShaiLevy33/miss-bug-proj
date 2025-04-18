@@ -12,17 +12,13 @@ const bugs = readJsonFile('./data/bug.json')
 async function query(filterBy) {
     let bugsToDisplay = bugs
     try {
-        if (filterBy.txt) {
+        if (filterBy.title) {
             const regExp = new RegExp(filterBy.txt, 'i')
-            bugsToDisplay = bugsToDisplay.filter(bug => regExp.test(bug.vendor))
+            bugsToDisplay = bugsToDisplay.filter(bug => regExp.test(bug.title))
         }
 
-        if (filterBy.minSpeed) {
-            bugsToDisplay = bugsToDisplay.filter(bug => bug.speed >= filterBy.minSpeed)
-        }
-        
-        if (filterBy.maxPrice) {
-            bugsToDisplay = bugsToDisplay.filter(bug => bug.price <= filterBy.maxPrice)
+        if (filterBy.severity) {
+            bugsToDisplay = bugsToDisplay.filter(bug => bug.severity >= filterBy.severity)
         }
         return bugsToDisplay
     } catch (err) {
@@ -70,5 +66,5 @@ async function save(bugToSave) {
 
 
 function saveBugsToFile() {
-    return writeJsonFile('./data/bugs.json', bugs)
+    return writeJsonFile('./data/bug.json', bugs)
 }
