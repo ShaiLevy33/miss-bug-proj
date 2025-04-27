@@ -1,4 +1,6 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { bugService } from '../services/bug.service.js'
+import { BugFilter } from '../cmps/BugFilter.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 import { useState } from 'react'
@@ -7,14 +9,19 @@ import { useEffect } from 'react'
 
 export function BugIndex() {
     const [bugs, setBugs] = useState([])
+    const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
     useEffect(() => {
         loadBugs()
-    }, [])
+    }, [filterBy])
 
     async function loadBugs() {
-        const bugs = await bugService.query()
-        setBugs(bugs)
+        try {
+            const bugs = await bugService.query(filterBy)
+            setBugs(bugs)
+        } catch (err) {
+            console.log('err:', err)
+        }
     }
 
     async function onRemoveBug(bugId) {
@@ -64,10 +71,15 @@ export function BugIndex() {
         }
     }
 
+    function onSetFilterBy(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+    }
+
     return (
         <section >
             <h3>Bugs App</h3>
             <main>
+                <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>

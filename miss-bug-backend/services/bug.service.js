@@ -13,7 +13,7 @@ async function query(filterBy) {
     let bugsToDisplay = bugs
     try {
         if (filterBy.title) {
-            const regExp = new RegExp(filterBy.txt, 'i')
+            const regExp = new RegExp(filterBy.title, 'i')
             bugsToDisplay = bugsToDisplay.filter(bug => regExp.test(bug.title))
         }
 

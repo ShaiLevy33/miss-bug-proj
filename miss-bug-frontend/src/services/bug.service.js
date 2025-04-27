@@ -8,8 +8,8 @@ const axios = Axios.create({
 })
 
 const STORAGE_KEY = 'bugDB'
-// const BASE_URL = 'http://127.0.0.1:3031/api/bug/'
-const BASE_URL = '/api/bug/'
+const BASE_URL = 'http://127.0.0.1:3031/api/bug/'
+// const BASE_URL = '/api/bug/'
 
 export const bugService = {
     query,
@@ -43,7 +43,7 @@ async function getById(bugId) {
 
 function remove(bugId) {
     try {
-        return axios.get(BASE_URL + bugId + '/remove')
+        return axios.get(BASE_URL + bugId )
     } catch (err) {
         console.log('err:', err)
         throw err
@@ -53,25 +53,22 @@ function remove(bugId) {
 
 async function save(bug) {
 
+    const method = bug._id ? 'put' : 'post'
+
     try {
-        // const { _id, vendor, price, speed } = bug
-        // let queryParams = `?vendor=${vendor}&speed=${speed}&price=${price}`
-        // if (_id) queryParams += `&_id=${_id}`
-        // const { data: savedBug } = await axios.get(BASE_URL + 'save' + queryParams)
-        const { data: savedBug } = await axios.get(BASE_URL + 'save', { params: bug })
+        const { data: savedBug } = await axios[method](BASE_URL + (bug._id || ''), bug)
         return savedBug
     } catch (err) {
         console.log('err:', err)
         throw err
-
     }
 }
 
 function getEmptyBug() {
     return {
-        vendor: '',
-        price: '',
-        speed: '',
+        title: '',
+        severity: '',
+        labels: '',
     }
 }
 
@@ -84,7 +81,7 @@ function getEmptyBug() {
 // }
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '', minSpeed: '' }
+    return { title: '', severity: '', labels: '' }
 }
 
 // TEST DATA
